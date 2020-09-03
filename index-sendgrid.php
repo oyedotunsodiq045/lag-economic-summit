@@ -77,7 +77,7 @@
           $stmt->bindParam(':date', $date);
 
           // Send Mail && Execute Query
-          if ($response && $stmt->execute()) {
+          if ($sendgrid->send($semail) && $stmt->execute()) {
               // Email Sent
               $msg = 'Your email has been sent';
               $msgClass = 'alert-success';
