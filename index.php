@@ -1,61 +1,59 @@
 <?php
 
-  include 'config/database.php';
+  include 'config/Database.php';
 
   // Message Vars
   $msg = '';
   $msgClass = '';
 
   // Check For Submit
-  // if (filter_has_var(INPUT_POST, 'submit')) {
   if ($_POST) {
-    // Get form data-browse
+  // if (isset($_POST["submit"])) {
+      // var_dump(isset($_POST['name']));
+    //   exit();         
+    // posted values
     $name     = htmlspecialchars($_POST['name']);
     $email    = htmlspecialchars($_POST['email']);
     $phone    = htmlspecialchars($_POST['phone']);
     $business = htmlspecialchars($_POST['business']);
     $address  = htmlspecialchars($_POST['address']);
 
-    // Check Reuire Fields
-    if (!empty($name) && !empty($email) && !empty($phone) && !empty($business) && !empty($address)) {
+    // Check Require Fields
+    if (!empty($_POST['name']) && !empty($_POST['email']) && !empty($_POST['phone']) && !empty($_POST['business']) && !empty($_POST['address'])) {
       // Passed
       if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
         // Failed
         $msg = 'Please use a valid email';
         $msgClass = 'alert-danger';
       } else {
-        // (1)
-        // Send Registration to User/SME
-        $toEmail = $email;
-        $subject = 'Lagos State Virtual Conference Registration Receipt';
-        $body = '<h2>Lagos State Virtual Conference Registration Receipt</h2>
-                  <h4>Venue</h4><p><u>http://www.lagosstatevirtualconference.com/fluxtechtechafrica</u></p>
-                  <h4>Time</h4><p>Monday, September 1, 2020 - 10:00AM West Central Africa</p>
-                  <h4>Username</h4><p>'.$email.'</p>
-                  <h4>Password</h4><p>MySuperSecret</p>';
-
-        // Email Headers
-        $headers = "MIME-Version: 1.0" ."\r\n";
-        $headers .="Content-Type:text/html;charset=UTF-8" . "\r\n";
-
-        // Additional Headers
-        $headers .= "From: " .$name. "<".$email.">". "\r\n";
-
-        // (2)
-        // Save Registration Data in DB
         try {
+          // (1)
+          // Send Receipt to User/SME
+          $toEmail = $email;
+          $subject = 'Lagos State Economic Summit Registration Receipt';
+          $body    = '<h2>Lagos State Economic Summit Registration Receipt</h2>
+                      <b>Topic: </b> Lagos State Economic Summit - EHIGBETTI<br />
+                      <b>Time: </b> Monday, September 1, 2020 10:00AM Africa/Lagos<br />
+                      <br />
+                      <b>Join Meeting: </b> <u>http://www.lagosstateeconomicsummit.com/fluxtechtechafrica</u><br />
+                      <br />
+                      <b>Meeting ID: </b> '.$email.'<br />
+                      <b>Passcode: </b> MySuperSecret<br />';
+  
+          // Email Headers
+          $headers = "MIME-Version: 1.0" ."\r\n";
+          $headers .="Content-Type:text/html;charset=UTF-8" . "\r\n";
+  
+          // Additional Headers
+          $headers .= "From: " .$name. "<".$email.">". "\r\n";
+
+          // (2)
+          // Insert Registration Data in DB
           // insert query
-          $query = "INSERT INTO user SET name=:name, email=:email, phone=:phone, business=:business, address=:address, date=:date";
+          $query = "INSERT INTO user SET name=:name, email=:email, phone=:phone, business=:business, address=:address,date=:date";
     
           // prepare query for execution
           $stmt = $con->prepare($query);
-                
-          // posted values
-          // $name     = htmlspecialchars($_POST['name']);
-          // $email    = htmlspecialchars($_POST['email']);
-          // $phone    = htmlspecialchars($_POST['phone']);
-          // $business = htmlspecialchars($_POST['business']);
-          // $address  = htmlspecialchars($_POST['address']);
                 
           // bind the parameters
           $stmt->bindParam(':name', $name);
@@ -70,49 +68,38 @@
 
           // Send Mail && Execute Query
           if (mail($toEmail, $subject, $body, $headers) && $stmt->execute()) {
-          // if ($stmt->execute()) {
-
-            // Send PDF - (Receipt) to User / SME
-            // Sends output inline to browser
-            // $mpdf = new \Mpdf\Mpdf();
-            // $mpdf->WriteHTML('Hello World');
-
-            // $mpdf->Output();
-
-            // Email Sent
-            $msg = 'Your email has been sent';
-            $msgClass = 'alert-success';
+              // Email Sent
+              $msg = 'Your email has been sent';
+              $msgClass = 'alert-success';
           } else {
             // Failed
             $msg = 'Your email was not sent';
             $msgClass = 'alert-danger';
           }
-        } catch (\Throwable $th) {
+             
+        } catch(PDOException $exception) {
           die('ERROR: ' . $exception->getMessage());
         }
-
       }
-
     } else {
       // Failed
       $msg = 'Please fill in all fields';
       $msgClass = 'alert-danger';
     }
-
-  }
+  } 
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Lagos State Virtual Conference</title>
+    <title>Lagos State Economic Summit</title>
     <link rel="stylesheet" href="bootstrap.min.css" />
   </head>
   <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand" href="index.php">Lagos State Virtual Conference</a>
+        <a class="navbar-brand" href="index.php">Lagos State Economic Summit</a>
       </div>
     </nav><br>
 

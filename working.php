@@ -31,12 +31,15 @@
           // (1)
           // Send Receipt to User/SME
           $toEmail = $email;
-          $subject = 'Lagos State Virtual Conference Registration Receipt';
-          $body    = '<h2>Lagos State Virtual Conference Registration Receipt</h2>
-                      <h4>Venue</h4><p><u>http://www.lagosstatevirtualconference.com/fluxtechtechafrica</u></p>
-                      <h4>Time</h4><p>Monday, September 1, 2020 - 10:00AM West Central Africa</p>
-                      <h4>Username</h4><p>'.$email.'</p>
-                      <h4>Password</h4><p>MySuperSecret</p>';
+          $subject = 'Lagos State Economic Summit Registration Receipt';
+          $body    = '<h2>Lagos State Economic Summit Registration Receipt</h2>
+                      <b>Topic: </b> Lagos State Economic Summit - EHIGBETTI<br />
+                      <b>Time: </b> Monday, September 1, 2020 10:00AM Africa/Lagos<br />
+                      <br />
+                      <b>Join Meeting: </b> <u>http://www.lagosstatevirtualconference.com/fluxtechtechafrica</u><br />
+                      <br />
+                      <b>Meeting ID: </b> '.$email.'<br />
+                      <b>Passcode: </b> MySuperSecret<br />';
   
           // Email Headers
           $headers = "MIME-Version: 1.0" ."\r\n";
