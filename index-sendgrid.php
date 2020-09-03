@@ -48,14 +48,14 @@
                             <b>Passcode: </b> MySuperSecret<br />"
           );
           $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
-          try {
-              $response = $sendgrid->send($semail);
-              print $response->statusCode() . "\n";
-              print_r($response->headers());
-              print $response->body() . "\n";
-          } catch (Exception $e) {
-              echo 'Caught exception: '. $e->getMessage() ."\n";
-          }
+          // try {
+          //     $response = $sendgrid->send($semail);
+          //     print $response->statusCode() . "\n";
+          //     print_r($response->headers());
+          //     print $response->body() . "\n";
+          // } catch (Exception $e) {
+          //     echo 'Caught exception: '. $e->getMessage() ."\n";
+          // }
 
           // (2)
           // Insert Registration Data in DB
@@ -77,7 +77,7 @@
           $stmt->bindParam(':date', $date);
 
           // Send Mail && Execute Query
-          if (mail($toEmail, $subject, $body, $headers) && $stmt->execute()) {
+          if ($response && $stmt->execute()) {
               // Email Sent
               $msg = 'Your email has been sent';
               $msgClass = 'alert-success';
