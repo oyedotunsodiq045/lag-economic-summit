@@ -15,15 +15,15 @@
     //   exit();         
     // posted values
     $name     = htmlspecialchars($_POST['name']);
-    $form_email    = htmlspecialchars($_POST['form_email']);
+    $email    = htmlspecialchars($_POST['email']);
     $phone    = htmlspecialchars($_POST['phone']);
     $business = htmlspecialchars($_POST['business']);
     $address  = htmlspecialchars($_POST['address']);
 
     // Check Require Fields
-    if (!empty($_POST['name']) && !empty($_POST['form_email']) && !empty($_POST['phone']) && !empty($_POST['business']) && !empty($_POST['address'])) {
+    if (!empty($_POST['name']) && !empty($_POST['email']) && !empty($_POST['phone']) && !empty($_POST['business']) && !empty($_POST['address'])) {
       // Passed
-      if (filter_var($form_email, FILTER_VALIDATE_EMAIL) === false) {
+      if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
         // Failed
         $msg = 'Please use a valid email';
         $msgClass = 'alert-danger';
@@ -32,12 +32,12 @@
           
           // (1)
           // Send Receipt to User/SME
-          $email = new \SendGrid\Mail\Mail(); 
-          $email->setFrom("noreply@lagosstateeconomicsummit.com", "Lagos State Economic Summit");
-          $email->setSubject("Lagos State Economic Summit Registration Receipt");
-          $email->addTo(".$email.");
+          $semail = new \SendGrid\Mail\Mail(); 
+          $semail->setFrom("noreply@lagosstateeconomicsummit.com", "Lagos State Economic Summit");
+          $semail->setSubject("Lagos State Economic Summit Registration Receipt");
+          $semail->addTo(".$email.");
           // $email->addContent("text/plain", "and easy to do anywhere, even with PHP");
-          $email->addContent(
+          $semail->addContent(
               "text/html", "<h2>Lagos State Economic Summit Registration Receipt</h2>
                             <b>Topic: </b> Lagos State Economic Summit - EHIGBETTI<br />
                             <b>Time: </b> Monday, September 1, 2020 10:00AM Africa/Lagos<br />
@@ -49,7 +49,7 @@
           );
           $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
           try {
-              $response = $sendgrid->send($email);
+              $response = $sendgrid->send($semail);
               print $response->statusCode() . "\n";
               print_r($response->headers());
               print $response->body() . "\n";
